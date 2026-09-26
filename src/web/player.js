@@ -7,7 +7,7 @@
  *
  * Some code from GB-Studio, see LICENSE.gbstudio
  *
- * 元：https://github.com/binji/binjgb/blob/main/docs/simple.js（ROM_FILENAME だけ変更）
+ * 元：https://github.com/binji/binjgb/blob/main/docs/simple.js（ROM_FILENAME と DEFAULT_PALETTE_IDX だけ変更）
  */
 "use strict";
 
@@ -33,7 +33,9 @@ const CGB_COLOR_CURVE = 2;    // 0: none, 1: Sameboy "Emulate Hardware" 2: Gamba
 //   const DEFAULT_PALETTE_IDX = 1;
 //   const PALETTES = [16, 32, 64];
 //
-const DEFAULT_PALETTE_IDX = 79;
+// 元は 79（水色・オレンジ・赤の組み合わせ）。ゲームの4色（白・明るい灰・暗い灰・黒）のまま見せるため、0（グレー）にした。
+// 遊んでいるときは、[ と ] のキーで、色を切り替えられる（0=グレー 62=薄い緑 など）。
+const DEFAULT_PALETTE_IDX = 0;
 const PALETTES = [
   0,  1,  2,  3,  4,  5,  6,  7,  8,  9,  10, 11, 12, 13, 14, 15, 16,
   17, 18, 19, 20, 21, 22, 23, 24, 25, 26, 27, 28, 29, 30, 31, 32, 33,
