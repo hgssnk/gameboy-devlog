@@ -3,8 +3,7 @@
 
 #include "assets.h"
 
-// 会話ウィンドウで、画面を順に表示する。Aで次へ。最後の画面でAを押すと閉じる。
-// 使うときは SAY(txt_名前) と書く（text/*.txt の [名前]）
-void say(const Screen *screens, uint8_t count);
+// 文を1ページ出す。1文字ずつ出て、Aで早送り。ページの終わりでAを押すと戻る
+void say_page(const Page *page);
 
 #endif

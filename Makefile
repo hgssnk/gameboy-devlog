@@ -6,7 +6,7 @@ OUT = build/$(PROJECT).gb
 EMULATOR = SameBoy
 
 GEN = build/gen
-GEN_SRCS = $(wildcard src/scenario/*.txt) src/tools/gen_assets.py src/tools/font/misaki_gothic.bdf
+GEN_SRCS = $(wildcard src/scenario/*.md) $(wildcard src/assets/bg/*.png) src/tools/gen_assets.py src/tools/font/misaki_gothic.bdf
 SRCS = $(shell find src/game -name '*.c') $(GEN)/assets.c
 HDRS = $(shell find src/game -name '*.h')
 
