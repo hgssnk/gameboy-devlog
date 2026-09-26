@@ -1,0 +1,56 @@
+# ROM をビルドして、ブラウザで遊べる形で GitHub Pages に公開する
+#
+# 動くのは、次のどちらかのとき
+#   - main への push で、最新のコミットメッセージに「githubactions-start」が入っているとき
+#   - GitHub の Actions のページから、手動で実行したとき
+# それ以外の push では、ジョブがスキップされる(ビルドも公開もされない)
+name: Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+env:
+  GBDK_VERSION: 4.5.0
+
+jobs:
+  build:
+    if: github.event_name == 'workflow_dispatch' || contains(github.event.head_commit.message, 'githubactions-start')
+    # スキップされる実行が、公開中の実行を止めないように、ワークフロー全体ではなくジョブに付ける
+    concurrency:
+      group: pages-build
+      cancel-in-progress: false
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # リポジトリの gbdk/ は Mac 用なので、Linux 版を取ってくる
+      - name: GBDK(Linux 版)を取得
+        run: |
+          curl -sSL "https://github.com/gbdk-2020/gbdk-2020/releases/download/${GBDK_VERSION}/gbdk-linux64.tar.gz" | tar xz -C "$RUNNER_TEMP"
+          ls "$RUNNER_TEMP/gbdk/bin/lcc"
+
+      - name: ビルド(ROM + ページ)
+        run: make web GBDK_HOME="$RUNNER_TEMP/gbdk/"
+
+      - uses: actions/configure-pages@v5
+
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: build/web
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v4

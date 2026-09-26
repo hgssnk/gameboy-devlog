@@ -12,6 +12,7 @@ GBDK-2020 を使って、ゲームボーイ用のソフトを C 言語で作り�
 │   ├── scenario/    【人間が書く】シナリオ(ch1.md)
 │   ├── assets/      【人間が描く】背景の絵(PNG)。いまは仮素材
 │   ├── game/        【AI が書く】ゲームの C のコード
+│   ├── web/         ブラウザ用のエミュレータとページ(既製品。触らない)
 │   └── tools/       【AI が整備】素材を C に変える仕組み
 ├── build/           出力。`make clean` で消える
 └── gbdk/            GBDK 本体(基本的に触らない)
@@ -27,6 +28,7 @@ GBDK-2020 を使って、ゲームボーイ用のソフトを C 言語で作り�
 make          # ビルドして、SameBoy で起動する
 make build    # ビルドだけ
 make run      # 起動だけ
+make serve    # ブラウザ版で確認する(http://localhost:8000/)
 make clean    # build/ を消す
 ```
 
@@ -77,6 +79,15 @@ flowchart TD
 - 背景: `set_bkg_data()`、`set_bkg_tiles()`
 - 画面の同期: `vsync()`
 - 画像の変換: `png2asset`
+
+## GitHub Actions で動作確認をする
+
+ROM をブラウザ用のエミュレータ([binjgb](https://github.com/binji/binjgb))と一緒に、GitHub Pages に公開する。URL を開くだけで、PC でもスマホでも遊べる。
+
+- **実行のしかた**:コミットメッセージに `githubactions-start` を入れて、main に push する。または、GitHub の Actions のページから手動で実行する。
+- **設定**:最初の1回だけ、Settings → Pages の Source を「GitHub Actions」にする。
+- **公開先**:https://hgssnk.github.io/gameboy-devlog/
+- **定義**:`.github/workflows/pages.yml`
 
 ## シナリオの書式
 
@@ -136,10 +147,12 @@ bg: street_night
 - [ ] 4. 第1章をシナリオ書式に移して、最後まで遊べる状態にする
 - [ ] 5. セーブ、章タイトル、フェード、効果音
 - [ ] 6. ミニゲーム(ディグから)
+- [ ] ブラウザ版の公開(仕組みは作った。Pages の設定と、最初の公開が残っている)
 - [ ] 実機向けのカートリッジ設定(ROM サイズ、MBC)
 - [ ] フラッシュカートで実機確認する
 
 ## クレジット
 
 - [GBDK-2020](https://github.com/gbdk-2020/gbdk-2020)
+- [binjgb](https://github.com/binji/binjgb)(ブラウザ用のエミュレータ。Ben Smith 氏、MIT ライセンス。`src/web/LICENSE.binjgb`)と、そこに含まれる GB Studio 由来のコード(`src/web/LICENSE.gbstudio`)
 - [美咲フォント](https://littlelimit.net/misaki.htm)(門真なむ氏。商用を含め、自由に利用・再配布できる。詳細は `src/tools/font/misaki.txt`)

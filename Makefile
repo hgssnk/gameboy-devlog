@@ -28,7 +28,19 @@ $(OUT): $(SRCS) $(HDRS) $(GEN)/assets.h
 	mkdir -p build
 	$(LCC) -Isrc/game -I$(GEN) -o $@ $(SRCS)
 
+# make web: ブラウザで遊べる形(ページ + ROM)を build/web/ に作る。GitHub Pages に置くのはこれ
+web: $(OUT)
+	rm -rf build/web
+	mkdir -p build/web
+	cp src/web/* build/web/
+	cp $(OUT) build/web/game.gb
+
+# make serve: build/web/ を http://localhost:8000/ で開く(手元での確認用)
+serve: web
+	@echo "http://localhost:8000/ を開く。止めるときは Ctrl+C"
+	cd build/web && python3 -m http.server 8000
+
 clean:
 	rm -rf build
 
-.PHONY: all build run clean
+.PHONY: all build run web serve clean
