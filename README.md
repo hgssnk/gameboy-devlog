@@ -39,7 +39,7 @@ make clean    # build/ を消す
 3. ROM をエミュレータ(SameBoy)で起動する。
 
 ```mermaid
-flowchart LR
+flowchart TD
     T["src/scenario/*.txt<br>(シナリオ)"] --> G["gen_assets.py"]
     F["src/tools/font/<br>(美咲フォント)"] --> G
     G --> A["build/gen/assets.c<br>(文字と絵のデータ)"]
